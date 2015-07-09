@@ -115,7 +115,7 @@
          #define LZHAM_LITTLE_ENDIAN_CPU 1
       #endif
 
-      #define LZHAM_USE_PTHREADS_API 1
+      #define LZHAM_USE_PTHREADS_API 0
       #define LZHAM_USE_GCC_ATOMIC_BUILTINS 1
 
       #define LZHAM_RESTRICT
@@ -149,7 +149,7 @@
          #define LZHAM_LITTLE_ENDIAN_CPU 1
       #endif
 
-      #define LZHAM_USE_PTHREADS_API 1
+      #define LZHAM_USE_PTHREADS_API 0
       #define LZHAM_USE_GCC_ATOMIC_BUILTINS 1
 
       #define LZHAM_RESTRICT
@@ -188,7 +188,7 @@
       #define LZHAM_LITTLE_ENDIAN_CPU 1
    #endif
 
-   #define LZHAM_USE_PTHREADS_API 1
+   #define LZHAM_USE_PTHREADS_API 0
    #define LZHAM_USE_GCC_ATOMIC_BUILTINS 1
 
    #define LZHAM_RESTRICT

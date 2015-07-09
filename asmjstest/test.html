@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test for LZHAM</title>
+</head>
+<body>
+<pre id="timing">
+</pre>
+<script>
+var timers = {};
+console.time = function(l) {
+    return function() {
+        l.apply(console, arguments);
+        timers[arguments[0]] = performance.now();
+    }
+}(console.time);
+
+console.timeEnd = function(l) {
+    return function() {
+        l.apply(console, arguments);
+        var duration =  performance.now() - timers[arguments[0]];
+        timing.innerHTML = timing.innerHTML + (arguments[0] + ": " + duration + "ms\n");
+    }
+}(console.timeEnd);
+
+window.Module = {};
+Module['_main'] = function() {
+    var oReq = new XMLHttpRequest();
+    oReq.onload = function (e) {
+        var data = new Uint8Array(oReq.response);
+
+        console.time("malloc and memcpy");
+        console.time("pre-decompress");
+        console.time("decompress");
+        console.time("total");
+        var decomp = new Float32Array(Module["decompress_buffer"](Module, data));
+        console.timeEnd("total");
+    };
+
+    oReq.responseType = "arraybuffer";
+    oReq.open("get", "iss_locations.lzham", true);
+    oReq.send();
+}
+</script>
+<script type="text/javascript" src="asmjstest.js" async></script>
+</body>
+</html>
