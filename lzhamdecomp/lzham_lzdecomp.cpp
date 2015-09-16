@@ -129,31 +129,17 @@ namespace lzham
 
    // Coroutine helpers.
    #define LZHAM_CR_INITIAL_STATE 0
-   #define LZHAM_CR_BEGIN(state) switch( state ) { case LZHAM_CR_INITIAL_STATE:
-   #define LZHAM_CR_RETURN(state, result) do { state = __LINE__; return (result); case __LINE__:; } while (0)
-   #define LZHAM_CR_FINISH }
+   #define LZHAM_CR_BEGIN(state) 
+   #define LZHAM_CR_RETURN(state, result) do { return (result); } while (0)
+   #define LZHAM_CR_FINISH 
 
    // Helpers to save/restore local variables (hopefully CPU registers) to memory.
-   #define LZHAM_RESTORE_STATE LZHAM_RESTORE_LOCAL_STATE \
-      match_hist0 = m_match_hist0; match_hist1 = m_match_hist1; match_hist2 = m_match_hist2; match_hist3 = m_match_hist3; \
-      cur_state = m_cur_state; dst_ofs = m_dst_ofs;
+   #define LZHAM_RESTORE_STATE 
       
-   #define LZHAM_SAVE_STATE LZHAM_SAVE_LOCAL_STATE \
-      m_match_hist0 = match_hist0; m_match_hist1 = match_hist1; m_match_hist2 = match_hist2; m_match_hist3 = match_hist3; \
-      m_cur_state = cur_state; m_dst_ofs = dst_ofs;
+   #define LZHAM_SAVE_STATE 
       
    // Helper that coroutine returns to the caller with a request for more input bytes.
-   #define LZHAM_DECODE_NEEDS_BYTES \
-      LZHAM_SAVE_STATE \
-      for ( ; ; ) \
-      { \
-         *m_pIn_buf_size = static_cast<size_t>(m_codec.decode_get_bytes_consumed()); \
-         *m_pOut_buf_size = 0; \
-         LZHAM_CR_RETURN(m_state, LZHAM_DECOMP_STATUS_NEEDS_MORE_INPUT); \
-         m_codec.decode_set_input_buffer(m_pIn_buf, *m_pIn_buf_size, m_pIn_buf, m_no_more_input_bytes_flag); \
-         if ((m_codec.m_decode_buf_eof) || (m_codec.m_decode_buf_size)) break; \
-      } \
-      LZHAM_RESTORE_STATE
+   #define LZHAM_DECODE_NEEDS_BYTES 
 
    #if LZHAM_PLATFORM_X360
       #define LZHAM_BULK_MEMCPY XMemCpy

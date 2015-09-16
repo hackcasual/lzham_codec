@@ -17,6 +17,9 @@ val decompress_buffer(val mod, val in_buf) {
    decomp_params.m_struct_size = sizeof(decomp_params);
    decomp_params.m_dict_size_log2 = 26;
 
+   decomp_params.m_decompress_flags |= LZHAM_DECOMP_FLAG_OUTPUT_UNBUFFERED;
+   printf("Doing it unbuffered\n");
+
    lzham_uint32 decomp_adler32 = 0;
    int ibs = in_buf["length"].as<int>();
 
@@ -31,6 +34,13 @@ val decompress_buffer(val mod, val in_buf) {
       orig_file_size |= (static_cast<size_t>(buf[5 + i]) << (i * 8));
    }
 
+   printf("Original file size: %d\n", orig_file_size);
+
+   EM_ASM_INT({
+  console.log('Whats this:' + $0);
+  
+}, orig_file_size);
+
    lzham_uint8 decomp_buf[orig_file_size];
    size_t decomp_size = orig_file_size;
 
@@ -41,11 +51,16 @@ val decompress_buffer(val mod, val in_buf) {
    lzham_decompress_status_t decomp_status = lzham_decompress_memory(&decomp_params, decomp_buf, &decomp_size, &buf[13], ibs, &decomp_adler32);
    EM_ASM(console.timeEnd('decompress'));
 
+   EM_ASM_INT({
+  console.log('Heres this' + $0);
+  
+}, decomp_size);
+
    if (decomp_status != LZHAM_DECOMP_STATUS_SUCCESS)
    {
       printf("Decompression test failed with status %i!\n", decomp_status);
-   } else {     
-      rval = heapu8["buffer"].call<val>("slice", uint32_t(decomp_buf), decomp_size);
+   } else {
+      rval = heapu8["buffer"].call<val>("slice", uint32_t(decomp_buf), uint32_t(decomp_buf) + decomp_size);
    }
 
    free (buf);

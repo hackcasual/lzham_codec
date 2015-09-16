@@ -20,14 +20,14 @@ endif(BUILD_X64)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -Wall -Wextra")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -Wall -Wextra")
 
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -Wextra -O3 -fomit-frame-pointer -fexpensive-optimizations")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -Wextra -Oz -fomit-frame-pointer -fexpensive-optimizations")
 set(CMAKE_C_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -Wextra")
 
 set(SRC_LIST 
     asmjstest.cpp)
 
 # -fno-strict-aliasing is *required* to compile LZHAM
-set(GCC_COMPILE_FLAGS "-fno-strict-aliasing -std=c++11 -s TOTAL_MEMORY=134217728")
+set(GCC_COMPILE_FLAGS "-fno-strict-aliasing -std=c++11 -s TOTAL_MEMORY=134217728 -Oz")
 
 if (NOT BUILD_X64)
 	set(GCC_COMPILE_FLAGS "${GCC_COMPILE_FLAGS} -m32")

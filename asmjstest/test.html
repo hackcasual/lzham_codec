@@ -29,12 +29,17 @@ Module['_main'] = function() {
     oReq.onload = function (e) {
         var data = new Uint8Array(oReq.response);
 
-        console.time("malloc and memcpy");
-        console.time("pre-decompress");
-        console.time("decompress");
-        console.time("total");
-        var decomp = new Float32Array(Module["decompress_buffer"](Module, data));
-        console.timeEnd("total");
+        for (var i = 0; i < 10; i++) {
+            console.time("malloc and memcpy");
+            console.time("pre-decompress");
+            console.time("decompress");
+            console.time("total");
+            var decomp = new Float32Array(Module["decompress_buffer"](Module, data));
+            console.log(decomp.length);
+            console.log(decomp[0]);
+            console.log(decomp[decomp.length - 1]);
+            console.timeEnd("total");
+        }
     };
 
     oReq.responseType = "arraybuffer";
