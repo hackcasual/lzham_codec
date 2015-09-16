@@ -1268,9 +1268,11 @@ namespace lzham
 
       if (pState->m_params.m_decompress_flags & LZHAM_DECOMP_FLAG_OUTPUT_UNBUFFERED)
          status = pState->decompress<true>();
+      /*
+      Removing this saves about 20k
       else
          status = pState->decompress<false>();
-      
+      */
       return status;
    }
 
